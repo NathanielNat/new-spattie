@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Aoo\Controller;
+use App\Product;
 
-class ProductControlller extends Controller
+class ProductController extends Controller
 {
 
     /**
@@ -27,7 +27,7 @@ class ProductControlller extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $products = Product::latest()->paginate(5);
         return view('products.index',compact('products'))

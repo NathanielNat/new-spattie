@@ -3,23 +3,27 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use App\User;
 use Spatie\Permission\Models\Role;
 use DB;
 use Hash;
 
-class UserControlller extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data = User::orderBy('id','DESC')->paginate(5);
-        return view('users.index',compact('data'))
-            ->with('i', ($request->input('page', 1) - 1) * 5);
+    //     $data = User::orderBy('id','DESC')->paginate(5);
+    //     return view('users.index',compact('data'))
+    //         ->with('i', ($request->input('page', 1) - 1) * 5);
+        $data = User::latest()->paginate();
+        $page = 'roles';
+        return view('users.index',compact('data'))->with('i', ($request->input('page', 1) - 1) * 5);
     }
 
     /**
@@ -109,7 +113,7 @@ class UserControlller extends Controller
         if(!empty($input['password'])){ 
             $input['password'] = Hash::make($input['password']);
         }else{
-            $input = array_except($input,array('password'));    
+            $input = array($input,array('password'));    
         }
 
 
